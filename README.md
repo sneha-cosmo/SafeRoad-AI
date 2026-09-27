@@ -1,50 +1,117 @@
-
-# SafeRoad AI
+# 🚗 SafeRoad AI
 
 ## CNN-Based Pothole Detection and Intelligent Road Risk Analysis
 
-SafeRoad AI is an AI-based road condition detection system that uses a Convolutional Neural Network (CNN) to identify whether a road image contains a pothole or represents a normal road.
+SafeRoad AI is an AI-based road condition detection system that uses **deep learning and computer vision** to identify potholes from road images.
 
-The system also provides a visual severity level, risk level, and safety recommendation based on the detected road condition.
+The system uses a **MobileNetV2-based Convolutional Neural Network (CNN)** to classify a road image as either **Normal** or **Pothole**.
 
----
-
-## Project Overview
-
-Road potholes can create safety risks for vehicles and road users. Manual identification of potholes over large road networks can be time-consuming.
-
-SafeRoad AI aims to automate the first stage of road-condition inspection by analyzing road images using deep learning.
-
-### Main Functions
-
-- Detect potholes from road images
-- Classify roads as Normal or Pothole
-- Display prediction confidence
-- Estimate visual severity
-- Determine road risk level
-- Provide a safety recommendation
-- Provide an interactive web interface using Streamlit
+After detecting a pothole, the system provides additional **visual severity analysis, risk assessment, and a safety recommendation**.
 
 ---
 
-## System Architecture
+# 📌 Project Overview
+
+Road potholes are a common road-safety problem that can affect vehicles and road users.
+
+Manual inspection of roads can be time-consuming, especially when large areas need to be monitored.
+
+SafeRoad AI provides an AI-based approach where a road image is uploaded to the system and analyzed automatically.
+
+The system performs the following steps:
+
+1. Accepts a road image from the user.
+2. Preprocesses the image.
+3. Passes the image through a MobileNetV2 CNN.
+4. Classifies the road as **Normal** or **Pothole**.
+5. Displays the prediction confidence.
+6. Performs visual severity analysis.
+7. Determines the risk level.
+8. Provides a safety recommendation.
+
+---
+
+# 🎯 Project Objectives
+
+The main objectives of SafeRoad AI are:
+
+- Detect potholes automatically from road images.
+- Classify road conditions as Normal or Pothole.
+- Use transfer learning to improve image classification.
+- Provide prediction confidence.
+- Estimate visual pothole severity.
+- Generate a road risk level.
+- Provide a safety recommendation.
+- Develop an easy-to-use web interface.
+- Demonstrate the application of AI in road-condition monitoring.
+
+---
+
+# 🧠 System Architecture
 
 ```text
-Road Image
-     ↓
-Image Preprocessing
-     ↓
-MobileNetV2 CNN
-     ↓
-Normal / Pothole
-     ↓
-Visual Severity
-     ↓
+                    ROAD IMAGE
+                         │
+                         ▼
+              Image Preprocessing
+                         │
+                         ▼
+                  MobileNetV2
+                         │
+                         ▼
+                CNN Classification
+                         │
+                ┌────────┴────────┐
+                │                 │
+                ▼                 ▼
+             NORMAL            POTHOLE
+                │                 │
+                └────────┬────────┘
+                         │
+                         ▼
+                 Visual Severity
+                         │
+                         ▼
+                    Risk Level
+                         │
+                         ▼
+             Safety Recommendation
+
+🔄 System Workflow
+
+User Uploads Road Image
+          │
+          ▼
+Resize Image to 224 × 224
+          │
+          ▼
+Convert Image to Array
+          │
+          ▼
+MobileNetV2 CNN Model
+          │
+          ▼
+Prediction
+          │
+     ┌────┴────┐
+     ▼         ▼
+  Normal    Pothole
+     │         │
+     └────┬────┘
+          │
+          ▼
+Prediction Confidence
+          │
+          ▼
+Visual Severity Analysis
+          │
+          ▼
 Risk Level
-     ↓
+          │
+          ▼
 Safety Recommendation
 
-Technologies Used
+🛠️ Technologies Used
 Python
 TensorFlow
 Keras
@@ -52,18 +119,32 @@ MobileNetV2
 NumPy
 Pillow
 Streamlit
-Git & GitHub
-Dataset
+Git
+GitHub
+
+📊 Dataset
 
 The project uses a binary road-image dataset containing:
 
 2,500 Normal road images
 2,500 Pothole images
-Total: 5,000 images
+5,000 total images
 
-The images are divided into training, validation, and testing sets.
+The dataset contains two classes:
+0 → Normal
+1 → Pothole
 
-Machine Learning Model
+The dataset was divided into:
+
+Training Dataset
+       ↓
+Validation Dataset
+       ↓
+Testing Dataset
+
+The dataset was used to train and evaluate the pothole classification model.
+
+🤖 Machine Learning Model
 
 The system uses MobileNetV2 with transfer learning.
 
@@ -90,18 +171,19 @@ Optimizer: Adam
 Loss function: Binary Cross-Entropy
 Output activation: Sigmoid
 Training epochs: 10
+
 Model Performance
 
 The trained model achieved approximately:
 
-Metric	Result
-Training Accuracy	98.35%
-Validation Accuracy	95.97%
-Test Accuracy	97.6%
+Metric	           Result
+Training Accuracy	 98.35%
+Validation Accuracy	 95.97%
+Test Accuracy	      97.6%
 
 The test classification results showed approximately 97% precision, recall, and F1-score for both classes.
 
-Intelligent Risk Analysis
+ntelligent Risk Analysis
 
 After pothole detection, SafeRoad AI provides an additional road-risk analysis layer.
 
@@ -151,6 +233,7 @@ Risk Level     : Medium
 
 Recommendation:
 Reduce speed and proceed carefully.
+
 Project Structure
 SafeRoad-AI/
 │
@@ -159,6 +242,7 @@ SafeRoad-AI/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+
 Installation
 
 Clone the repository:
@@ -172,6 +256,7 @@ cd SafeRoad-AI
 Install the required Python packages:
 
 pip install -r requirements.txt
+
 Run the Application
 
 Start the Streamlit application using:
@@ -200,6 +285,7 @@ Pothole tracking and deterioration analysis
 Mobile application integration
 Road-condition monitoring dashboard
 Integration with vehicle safety systems
+
 Project Goal
 
 The goal of SafeRoad AI is to demonstrate how computer vision and deep learning can be used as a foundation for automated road-condition monitoring and intelligent road-risk analysis.
