@@ -6,11 +6,6 @@ import math
 from PIL import Image
 from datetime import datetime
 
-
-# ============================================================
-# PAGE CONFIGURATION
-# ============================================================
-
 st.set_page_config(
     page_title="SafeRoad AI",
     page_icon="🛡️",
@@ -18,10 +13,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-
-# ============================================================
-# LOAD MODEL
-# ============================================================
 
 @st.cache_resource
 def load_model():
@@ -31,11 +22,6 @@ def load_model():
 model = load_model()
 
 
-# ============================================================
-# HTML HELPER — always dedent so Markdown never mistakes
-# indented lines for a code block.
-# ============================================================
-
 def html(markup: str) -> str:
     return textwrap.dedent(markup).strip()
 
@@ -43,10 +29,6 @@ def html(markup: str) -> str:
 def render(markup: str):
     st.markdown(html(markup), unsafe_allow_html=True)
 
-
-# ============================================================
-# CUSTOM CSS
-# ============================================================
 
 render("""
 <style>
@@ -185,11 +167,6 @@ footer { visibility: hidden; }
 </style>
 """)
 
-
-# ============================================================
-# HELPERS
-# ============================================================
-
 def run_inference(pil_image):
     resized = pil_image.resize((224, 224))
     arr = np.expand_dims(np.array(resized), axis=0)
@@ -202,7 +179,6 @@ def run_inference(pil_image):
         label = "Normal"
         confidence = (1 - pred) * 100
 
-    # Severity — prototype rule, not learned by the CNN
     if label == "Normal":
         severity = "Low"
     else:
@@ -226,9 +202,6 @@ def risk_gauge_svg(risk_level: str) -> str:
     nx = 130 + 72 * math.cos(rad)
     ny = 140 - 72 * math.sin(rad)
 
-    # NOTE: kept on tight single-purpose lines, no blank lines inside —
-    # blank/indented lines inside an SVG string make Markdown treat the
-    # rest of it as a code block instead of rendering it as HTML.
     return (
         '<svg viewBox="0 0 260 165" xmlns="http://www.w3.org/2000/svg" '
         'style="display:block;margin:0 auto;width:100%;max-width:280px;height:auto;">'
@@ -246,10 +219,6 @@ def risk_gauge_svg(risk_level: str) -> str:
     )
 
 
-# ============================================================
-# HEADER
-# ============================================================
-
 render("""
 <div class="logo-title">🛡️ SafeRoad AI</div>
 <div class="subtitle">CNN-Based Pothole Detection System</div>
@@ -257,9 +226,6 @@ render("""
 
 left_column, right_column = st.columns([1.4, 1], gap="large")
 
-# ------------------------------------------------------------
-# LEFT COLUMN — IMAGE ANALYSIS
-# ------------------------------------------------------------
 
 with left_column:
 
@@ -281,7 +247,6 @@ with left_column:
             st.image(original_image, use_container_width=True)
             render('<div class="image-caption">CURRENT IMAGE VIEW</div>')
 
-        # Only re-run inference when a new file is uploaded
         file_identity = (uploaded_file.name, uploaded_file.size)
         if st.session_state.get("last_file_identity") != file_identity:
             label, confidence, severity, risk, recommendation = run_inference(original_image)
@@ -293,9 +258,6 @@ with left_column:
             st.session_state["recommendation"] = recommendation
             st.session_state["analyzed_on"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-# ------------------------------------------------------------
-# RIGHT COLUMN — RESULTS
-# ------------------------------------------------------------
 
 with right_column:
 
@@ -311,7 +273,6 @@ with right_column:
         analyzed_on = st.session_state["analyzed_on"]
         is_normal = label == "Normal"
 
-        # ---------------- DETECTION RESULT ----------------
         with st.container(key="detect_card"):
 
             status_pill = (
@@ -357,7 +318,6 @@ with right_column:
                     </div>
                 """)
 
-        # ---------------- ROAD RISK ANALYSIS ----------------
         with st.container(key="risk_card"):
             render("""
                 <div class="card-title">Road Risk Analysis</div>
@@ -374,7 +334,6 @@ with right_column:
                 <div class="info-row"><div class="info-icon">◉</div><div>Detection Confidence: <b>{confidence:.2f}%</b></div></div>
             """)
 
-        # ---------------- RECOMMENDATION ----------------
         render(f"""
             <div class="recommendation-wrap">
                 <div class="recommendation-header">ⓘ &nbsp; Recommendation</div>
